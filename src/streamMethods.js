@@ -4,6 +4,7 @@ const PgQueryStream = require('pg-query-stream')
 const Builder = require('./transforms/Builder')
 const { releaseConnection } = require('./utils')
 const methods = Object.create(null)
+const Model = require('sequelize/lib/model')
 
 methods.findAllStream = findAllStream
 
@@ -12,6 +13,7 @@ module.exports = methods
 function findAllStream (options = {}) {
   const connectionManager = this.sequelize.connectionManager
   const QueryGenerator = this.QueryGenerator
+  Model._validateIncludedElements.bind(this)(options)
   const sql = QueryGenerator.selectQuery(this.tableName, options, this)
   const queryStream = new PgQueryStream(sql)
 
