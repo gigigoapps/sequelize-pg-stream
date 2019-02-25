@@ -13,6 +13,7 @@ module.exports = methods
 function findAllStream (options = {}) {
   const connectionManager = this.sequelize.connectionManager
   const QueryGenerator = this.QueryGenerator
+  if (options.hasOwnProperty('include')) Model._validateIncludedElements.bind(this)(options)
   Model._validateIncludedElements.bind(this)(options)
   const sql = QueryGenerator.selectQuery(this.tableName, options, this)
   const queryStream = new PgQueryStream(sql)
